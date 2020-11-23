@@ -24,5 +24,6 @@ protected:
 	int rotatePlate1 = 0;
 	int rotatePlate2 = 0;
 	int rotatePlate3 = 0;
+	int rotatePuzzleDoor = 0;
 
 };

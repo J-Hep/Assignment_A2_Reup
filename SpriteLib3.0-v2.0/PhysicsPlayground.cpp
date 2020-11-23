@@ -525,11 +525,10 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 				tempPhsBody.SetRotationAngleDeg(90.f);
 			}
 
-			//Platform rotate 1
+			//Player containing wall
 			{
 				//Creates entity
 				auto entity = ECS::CreateEntity();
-				rotatePlate1 = entity;
 
 				//Add components
 				ECS::AttachComponent<Sprite>(entity);
@@ -537,9 +536,9 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 				ECS::AttachComponent<PhysicsBody>(entity);
 
 				//Sets up components
-				std::string fileName = "RedSquare.png";
-				ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 2);
-				ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -10.f, 2.f));
+				std::string fileName = "GraySquare.png";
+				ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 50, 10);
+				ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 2.f));
 
 				auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 				auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
@@ -549,21 +548,20 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 				b2Body* tempBody;
 				b2BodyDef tempDef;
 				tempDef.type = b2_staticBody;
-				tempDef.position.Set(float32(345.f), float32(-50.f)); //300,-120
+				tempDef.position.Set(float32(300.f), float32(-70.f));
 
 				tempBody = m_physicsWorld->CreateBody(&tempDef);
 
-				tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX),
-					float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, GROUND, PLAYER | ENEMY);
+				tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, ENVIRONMENT, PLAYER | ENEMY);
 				tempPhsBody.SetColor(vec4(0.f, 1.f, 0.f, 0.3f));
-
+				tempPhsBody.SetRotationAngleDeg(90.f);
 			}
 
-			//Platform rotate 2
+			//Player containing door
 			{
 				//Creates entity
 				auto entity = ECS::CreateEntity();
-				rotatePlate2 = entity;
+				rotatePuzzleDoor = entity;
 
 				//Add components
 				ECS::AttachComponent<Sprite>(entity);
@@ -571,9 +569,9 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 				ECS::AttachComponent<PhysicsBody>(entity);
 
 				//Sets up components
-				std::string fileName = "RedSquare.png";
-				ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 2);
-				ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -10.f, 2.f));
+				std::string fileName = "GraySquare.png";
+				ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 50, 10);
+				ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 2.f));
 
 				auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 				auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
@@ -583,52 +581,15 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 				b2Body* tempBody;
 				b2BodyDef tempDef;
 				tempDef.type = b2_staticBody;
-				tempDef.position.Set(float32(345.f), float32(-70.f)); //300,-120
-
-				tempBody = m_physicsWorld->CreateBody(&tempDef);
-				
-
-				tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX),
-					float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, GROUND, PLAYER | ENEMY);
-				tempPhsBody.SetColor(vec4(0.f, 1.f, 0.f, 0.3f));
-
-				tempPhsBody.SetRotationAngleDeg(90.0f);
-
-			}
-
-			//Platform rotate 3
-			{
-				//Creates entity
-				auto entity = ECS::CreateEntity();
-				rotatePlate3 = entity;
-
-				//Add components
-				ECS::AttachComponent<Sprite>(entity);
-				ECS::AttachComponent<Transform>(entity);
-				ECS::AttachComponent<PhysicsBody>(entity);
-
-				//Sets up components
-				std::string fileName = "RedSquare.png";
-				ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 2);
-				ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -10.f, 2.f));
-
-				auto& tempSpr = ECS::GetComponent<Sprite>(entity);
-				auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
-
-				float shrinkX = 0.f;
-				float shrinkY = 0.f;
-				b2Body* tempBody;
-				b2BodyDef tempDef;
-				tempDef.type = b2_staticBody;
-				tempDef.position.Set(float32(345.f), float32(-90.f)); //300,-120
+				tempDef.position.Set(float32(300.f), float32(-100.f));
 
 				tempBody = m_physicsWorld->CreateBody(&tempDef);
 
-				tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX),
-					float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, GROUND, PLAYER | ENEMY);
+				tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, ENVIRONMENT, PLAYER | ENEMY);
 				tempPhsBody.SetColor(vec4(0.f, 1.f, 0.f, 0.3f));
-
+				tempPhsBody.SetRotationAngleDeg(90.f);
 			}
+
 		}
 	}
 
@@ -705,8 +666,113 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 
 			tempPhsBody.SetColor(vec4(25.f, 0.f, 1.f, 1.0f)); }
 
-		//Setup trigger
-		{/*
+		//Platform rotate 1
+		{
+			//Creates entity
+			auto entity = ECS::CreateEntity();
+			rotatePlate1 = entity;
+
+			//Add components
+			ECS::AttachComponent<Sprite>(entity);
+			ECS::AttachComponent<Transform>(entity);
+			ECS::AttachComponent<PhysicsBody>(entity);
+
+			//Sets up components
+			std::string fileName = "RedSquare.png";
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 2);
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -10.f, 2.f));
+
+			auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+			auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+			float shrinkX = 0.f;
+			float shrinkY = 0.f;
+			b2Body* tempBody;
+			b2BodyDef tempDef;
+			tempDef.type = b2_staticBody;
+			tempDef.position.Set(float32(345.f), float32(-50.f)); //300,-120
+
+			tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+			tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX),
+				float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, GROUND, PLAYER | ENEMY);
+			tempPhsBody.SetColor(vec4(0.f, 1.f, 0.f, 0.3f));
+
+		}
+
+		//Platform rotate 2
+		{
+			//Creates entity
+			auto entity = ECS::CreateEntity();
+			rotatePlate2 = entity;
+
+			//Add components
+			ECS::AttachComponent<Sprite>(entity);
+			ECS::AttachComponent<Transform>(entity);
+			ECS::AttachComponent<PhysicsBody>(entity);
+
+			//Sets up components
+			std::string fileName = "RedSquare.png";
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 2);
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -10.f, 2.f));
+
+			auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+			auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+			float shrinkX = 0.f;
+			float shrinkY = 0.f;
+			b2Body* tempBody;
+			b2BodyDef tempDef;
+			tempDef.type = b2_staticBody;
+			tempDef.position.Set(float32(345.f), float32(-70.f)); //300,-120
+
+			tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+
+			tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX),
+				float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, GROUND, PLAYER | ENEMY);
+			tempPhsBody.SetColor(vec4(0.f, 1.f, 0.f, 0.3f));
+
+			tempPhsBody.SetRotationAngleDeg(90.0f);
+
+		}
+
+		//Platform rotate 3
+		{
+			//Creates entity
+			auto entity = ECS::CreateEntity();
+			rotatePlate3 = entity;
+
+			//Add components
+			ECS::AttachComponent<Sprite>(entity);
+			ECS::AttachComponent<Transform>(entity);
+			ECS::AttachComponent<PhysicsBody>(entity);
+
+			//Sets up components
+			std::string fileName = "RedSquare.png";
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 2);
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -10.f, 2.f));
+
+			auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+			auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+			float shrinkX = 0.f;
+			float shrinkY = 0.f;
+			b2Body* tempBody;
+			b2BodyDef tempDef;
+			tempDef.type = b2_staticBody;
+			tempDef.position.Set(float32(345.f), float32(-90.f)); //300,-120
+
+			tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+			tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX),
+				float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, GROUND, PLAYER | ENEMY);
+			tempPhsBody.SetColor(vec4(0.f, 1.f, 0.f, 0.3f));
+
+		}
+
+		//Setup trigger rotate puzzle
+		{
 			//Creates entity
 			auto entity = ECS::CreateEntity();
 
@@ -717,12 +783,12 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 			ECS::AttachComponent<Trigger*>(entity);
 
 			//Sets up components
-			std::string fileName = "boxSprite.jpg";
-			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 40, 40);
+			std::string fileName = "YellowSquare.png";
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 15, 2.5);
 			ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
 			ECS::GetComponent<Trigger*>(entity) = new DestroyTrigger();
 			ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
-			ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(ball);
+			ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(rotatePuzzleDoor);
 
 			auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 			auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
@@ -732,13 +798,13 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 			b2Body* tempBody;
 			b2BodyDef tempDef;
 			tempDef.type = b2_staticBody;
-			tempDef.position.Set(float32(300.f), float32(-30.f));
+			tempDef.position.Set(float32(337.7f), float32(-112.f));
 
 			tempBody = m_physicsWorld->CreateBody(&tempDef);
 
 			tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, TRIGGER, PLAYER | OBJECTS);
 			tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
-		*/}
+		}
 	}
 	
 
