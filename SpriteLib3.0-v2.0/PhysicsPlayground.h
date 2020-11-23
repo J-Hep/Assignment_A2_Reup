@@ -21,4 +21,8 @@ protected:
 	PhysicsPlaygroundListener listener;
 
 	int ball = 0;
+	int rotatePlate1 = 0;
+	int rotatePlate2 = 0;
+	int rotatePlate3 = 0;
+
 };
