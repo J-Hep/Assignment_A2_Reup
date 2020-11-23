@@ -28,5 +28,6 @@ protected:
 	int movingPlate = 0;
 	int movingPlateWall1 = 0;
 	int movingPlateWall2 = 0;
+	int winCover = 0;
 
 };
