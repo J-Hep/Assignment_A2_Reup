@@ -108,6 +108,25 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 
 			/*Scene::CreateSprite(m_sceneReg, "HelloWorld.png", 100, 60, 0.5f, vec3(0.f, 0.f, 0.f));*/
 		}
+
+		//Setup rotate sign
+		{
+			//Creates entity
+			auto entity = ECS::CreateEntity();
+
+			//Add components
+			ECS::AttachComponent<Sprite>(entity);
+			ECS::AttachComponent<Transform>(entity);
+
+			//Set up the components
+			std::string fileName = "RotateOnly.png";
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 80, 30);
+			ECS::GetComponent<Sprite>(entity).SetTransparency(1.0f);
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(250.f, -75.f, -1.f));
+
+
+			/*Scene::CreateSprite(m_sceneReg, "HelloWorld.png", 100, 60, 0.5f, vec3(0.f, 0.f, 0.f));*/
+		}
 	}
 
 	/////////////////////////////////////World & Platforms//////////////////////////////////////////////////
@@ -870,9 +889,11 @@ void PhysicsPlayground::KeyboardHold()
 
 	else if (Input::GetKey(Key::T))
 	{
+		/*
 		rPlatOne.SetRotationAngleDeg(rPlatOne.GetRotationAngleDeg() - 20 * Timer::deltaTime);
 		rPlatTwo.SetRotationAngleDeg(rPlatTwo.GetRotationAngleDeg() - 20 * Timer::deltaTime);
 		rPlatThree.SetRotationAngleDeg(rPlatThree.GetRotationAngleDeg() - 20 * Timer::deltaTime);
+		*/
 	}
 
 
